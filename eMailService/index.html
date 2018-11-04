@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Email Service App</title>
+</head>
+<body>
+    <div>
+        <h2>Input</h2>
+        <div>
+            <textarea id="inputArea" rows="10" cols="150"></textarea>
+            <input type="button" value="Import" onclick="postData();" />
+        </div>
+
+        <p id="result" />
+    </div>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+        var uri = 'api/EmailService';
+        function postData() {
+            var inputData = $('#inputArea').val();
+            if (!inputData || inputData === "") {
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                contentType: "text/plain",
+                url: uri,
+                data: inputData,
+            }).done(function (result) {
+                $('#inputArea').text("");
+                $('#result').text(JSON.stringify(result));
+            }).fail(function (jqXHR, textStatus, err) {
+                $('#result').text('Error: ' + jqXHR.responseText);
+            });
+        }
+    </script>
+</body>
+</html>
